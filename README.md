@@ -7,8 +7,8 @@ Where this is a good fit
 -Well defined range of integers and results are counting many values.  The amount of memory used is approx 2^(ceil(log2(max-min)))/8 bytes, so a cardinality of 1 billion items will use ~134MB.
 
 Bad fit
--**If your values are ever outside the provided range!** Depending on how much 'room' is outside the range provided you might get a correct count or you may get a collision which will result in a lower number than the actual count (estimation will always be equal to or less than exact count).  Current implementation does not throw an error as speed was prefered to safety, can be modified to warn or error if desired.
--Only a few unique values are ever selected and the range is very large.  The function will of course work, but waste memory compared to other methods.
+- **If your values are ever outside the provided range!** Depending on how much 'room' is outside the range provided you might get a correct count or you may get a collision which will result in a lower number than the actual count (estimation will always be equal to or less than exact count).  Current implementation does not throw an error as speed was prefered to safety, can be modified to warn or error if desired.
+- Only a few unique values are ever selected and the range is very large.  The function will of course work, but waste memory compared to other methods.
 
 ## Use
 
@@ -34,6 +34,6 @@ SELECT CountInt(column_name, 1, 1000) FROM table_name
 ```
 
 ### Notes
--Requires processor capable of bmi2 and abm (check 'cat /proc/cpuinfo' flags)
--Requires Impala version >2.9 for mixing intermediate and final types, could be backported but an exercise for the user.
--Current UDA test framework is not compatible with constants in the function, so they are not provided.
+- Requires processor capable of bmi2 and abm (check 'cat /proc/cpuinfo' flags)
+- Requires Impala version >2.9 for mixing intermediate and final types, could be backported but an exercise for the user.
+- Current UDA test framework is not compatible with constants in the function, so they are not provided.
