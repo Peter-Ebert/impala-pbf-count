@@ -4,7 +4,7 @@ Fast counting of 'dense and bounded' integer sets in Impala.
 'Bounded' meaning there is a well defined min and max range of values and 'dense' meaning the number of values in the set is high compared to the range.  When 'density' is greater than 1 integer per 64 possible values (e.g. 3 values in the range of 1-128) this method will use less memory than storing all the individual values in a structure like a hashset. For example, a set of integers with a range between 1-64 only requires 8 bytes total (plus a fixed size in the struct to store the range) and if storing the numbers 1, 2, and 3 will use 1/3 the memory compared to storing all 3 of the 64bit values, even disregarding hashset overhead.
 
 Where this is a good fit
--Well defined range of integers and results are counting many values.  The amount of memory used is approx 2^(ceil(log2(max-min)))/8 bytes, so a cardinality of 1 billion items will use ~134MB.
+- Well defined range of integers and results are counting many values.  The amount of memory used is approx 2^(ceil(log2(max-min)))/8 bytes, so a cardinality of 1 billion items will use ~134MB.
 
 Bad fit
 - **If your values are ever outside the provided range!** Depending on how much 'room' is outside the range provided you might get a correct count or you may get a collision which will result in a lower number than the actual count (estimation will always be equal to or less than exact count).  Current implementation does not throw an error as speed was prefered to safety, can be modified to warn or error if desired.
