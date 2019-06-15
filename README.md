@@ -13,8 +13,8 @@ Bad fit
 ## Use
 
 1. Install the impala udf development package (e.g. <http://archive.cloudera.com/cdh5/> see Impala documentation for more detail)
-2. git clone <repo url here>
-3. cd <repo dir here>
+2. git clone \<repo url here\>
+3. cd \<repo dir here\>
 4. cmake .
 5. make
 
@@ -30,7 +30,7 @@ INTERMEDIATE string;
 ```
 
 ```sql
-select CountInt(column_name, 1, 1000) from table_name 
+SELECT CountInt(column_name, 1, 1000) FROM table_name 
 ```
 
 ### Notes
