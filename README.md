@@ -18,7 +18,7 @@ Bad fit
 4. cmake .
 5. make
 
-'
+'''sql
 CREATE AGGREGATE FUNCTION CountInt(int, bigint, bigint) RETURNS BIGINT
 LOCATION '/path/to/udfs/libpbfcount.so'
 INIT_FN='pbfInit'
@@ -27,11 +27,11 @@ MERGE_FN='pbfMerge'
 SERIALIZE_FN='pbfSerialize'
 FINALIZE_FN='pbfFinalize'
 INTERMEDIATE string;
-'
+'''
 
-'
+'''sql
 select CountInt(column_name, 1, 1000) from table_name 
-'
+'''
 
 ### Notes
 -Requires processor capable of bmi2 and abm (check 'cat /proc/cpuinfo' flags)
