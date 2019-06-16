@@ -23,9 +23,8 @@ using namespace impala_udf;
 // Counting using perfect bloom filters
 // ---------------------------------------------------------------------------
 
-// Initialize the StringVal intermediate to a zero'd AvgStruct
+// Initialize the StringVal intermediate to a zero'd BloomFilter
 void pbfInit(FunctionContext* ctx, StringVal* inter) {
-
 
   BigIntVal* minconst;
   BigIntVal* maxconst;
@@ -48,23 +47,33 @@ void pbfInit(FunctionContext* ctx, StringVal* inter) {
   // maxconst = new BigIntVal(12000000);
   // todo: test with min = max, should return 0;
 
+  if(minconst > maxconst) {
+    ctx->SetError("Bad input: Minimum cannot be less than maximum.");
+    return;
+  }
+
   uint64_t leadingzeros = __lzcnt64(maxconst->val - minconst->val);
+  //minimum of 1 byte, this also handles where max=min
+  if(leadingzeros > 64-3) {
+    leadingzeros = 64-3;
+  }
+
   // 64-3=61, 64 bits minus 3 to divide by 8 bits in a byte
   uint64_t bytecount = 1ull << (61-leadingzeros);
   // 1's mark relevent bit locations, subtract 1 from power of 2 to set all previous bits to 1
   uint64_t bitmask = (1ull << (64-leadingzeros))-1;
 
   
-  //cout << bytecount << endl;
-  // if (leadingzeros < (64-24)) {
-  if (leadingzeros < (64-36)) {
-    ctx->SetError("Size over 2^36 bits (8GiB), exiting for safety, may increase later after further testing.");
+  // Range cap to avoid OOM (24 = 2MiB, 36 = 8GiB)
+  if (leadingzeros < (64-32)) {
+    ctx->SetError("Impala strings cannot exceed 1GB, max-min is greater than 2^32 bits.");
     return;
   }
 
   //Allocate Memory
   int StructureSize = sizeof(BloomFilter)+bytecount;
   inter->ptr = ctx->Allocate(StructureSize);
+  //!todo check if allocation over mem_limit fails correctly, check intermediates as well, more likely there
 
   if (inter->ptr == NULL) {
     *inter = StringVal::null();
@@ -96,6 +105,7 @@ void pbfUpdate(FunctionContext* ctx, const IntVal& value, const BigIntVal& minco
 
   BloomFilter* bf = reinterpret_cast<BloomFilter*>(inter->ptr);
   bf->Set(value.val);
+  //todo, can't subtract bigint over 2^32 from int
 }
 
 StringVal pbfSerialize(FunctionContext* ctx, const StringVal& inter) {
