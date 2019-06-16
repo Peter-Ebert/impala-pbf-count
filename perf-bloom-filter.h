@@ -26,8 +26,8 @@ struct BloomFilter {
 
   void Set(uint64_t position) {
     // note: will not warn if values are outside of range to avoid performance impact
-    uint64_t position_offset = (position-offset) & bitmask; 
-    uint8_t* chunk = &bytes[ (position_offset) >> CHUNK_BIT_SIZE ];
+    uint64_t position_offset = position-offset & bitmask; 
+    uint8_t* chunk = &bytes[ position_offset >> CHUNK_BIT_SIZE ];
     *chunk |= 1 << (position_offset & ((1 << CHUNK_BIT_SIZE)-1));
     //todo: performance analysis
   }
