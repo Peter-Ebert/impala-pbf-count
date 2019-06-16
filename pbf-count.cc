@@ -54,6 +54,7 @@ void pbfInit(FunctionContext* ctx, StringVal* inter) {
 
   uint64_t leadingzeros = __lzcnt64(maxconst->val - minconst->val);
   //minimum of 1 byte, this also handles where max=min
+
   if(leadingzeros > 64-3) {
     leadingzeros = 64-3;
   }
@@ -66,7 +67,7 @@ void pbfInit(FunctionContext* ctx, StringVal* inter) {
   
   // Range cap to avoid OOM (24 = 2MiB, 36 = 8GiB)
   if (leadingzeros < (64-32)) {
-    ctx->SetError("Impala strings cannot exceed 1GB, max-min is greater than 2^32 bits.");
+    ctx->SetError("Impala strings cannot exceed 1GB, cannot count greater than max-min = 2^32 (~4.2 billion).");
     return;
   }
 

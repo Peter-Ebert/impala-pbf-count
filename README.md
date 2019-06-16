@@ -39,3 +39,4 @@ SELECT CountInt(column_name, 1, 1000) FROM table_name
 - Requires processor capable of bmi2 and abm (check 'cat /proc/cpuinfo' flags)
 - Requires Impala version >2.9 for mixing intermediate and final types, could be backported but an exercise for the user.
 - Current UDA test framework is not compatible with constants in the function, so they are not provided.
+- Cannot count above ~4.2 billion (2^32) due to Impala intermediate limits of 1GB (due to thrift)
