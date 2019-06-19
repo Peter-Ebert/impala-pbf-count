@@ -20,11 +20,12 @@ Bad fit
 4. cmake .
 5. make
 
+Int
 ```sql
 CREATE AGGREGATE FUNCTION CountInt(int, bigint, bigint) RETURNS BIGINT
 LOCATION '/path/to/udfs/libpbfcount.so'
 INIT_FN='pbfInit'
-UPDATE_FN='pbfUpdate'
+UPDATE_FN='pbfIntUpdate'
 MERGE_FN='pbfMerge'
 SERIALIZE_FN='pbfSerialize'
 FINALIZE_FN='pbfFinalize'
@@ -33,6 +34,22 @@ INTERMEDIATE string;
 
 ```sql
 SELECT CountInt(column_name, 1, 1000) FROM table_name 
+```
+
+BigInt
+```sql
+CREATE AGGREGATE FUNCTION CountBigInt(bigint, bigint, bigint) RETURNS BIGINT
+LOCATION '/path/to/udfs/libpbfcount.so'
+INIT_FN='pbfInit'
+UPDATE_FN='pbfBigIntUpdate'
+MERGE_FN='pbfMerge'
+SERIALIZE_FN='pbfSerialize'
+FINALIZE_FN='pbfFinalize'
+INTERMEDIATE string;
+```
+
+```sql
+SELECT CountBigInt(column_name, 1, 1000) FROM table_name 
 ```
 
 ### Notes

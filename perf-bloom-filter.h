@@ -24,7 +24,7 @@ struct BloomFilter {
   uint8_t bytes[];
   //todo: might be cleaner as class with constructor that manages memory
 
-  void Set(uint64_t position) {
+  void Set(int64_t position) {
     // note: will not warn if values are outside of range to avoid performance impact
     uint64_t position_offset = position-offset & bitmask; 
     uint8_t* chunk = &bytes[ position_offset >> CHUNK_BIT_SIZE ];

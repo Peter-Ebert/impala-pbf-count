@@ -94,7 +94,22 @@ void pbfInit(FunctionContext* ctx, StringVal* inter) {
   
 }
 
-void pbfUpdate(FunctionContext* ctx, const IntVal& value, const BigIntVal& minconst, const BigIntVal& maxconst, StringVal* inter) {
+void pbfIntUpdate(FunctionContext* ctx, const IntVal& value, const BigIntVal& minconst, const BigIntVal& maxconst, StringVal* inter) {
+//void pbfUpdate(FunctionContext* ctx, const IntVal& value, StringVal* inter) {
+  // as with other sql counts, null is skipped
+  if(value.is_null) return;
+
+  if(UNLIKELY(!inter->ptr)) {
+    ctx->SetError("PBF Update: intermediate contains null pointer.");
+    return;
+  }
+
+  BloomFilter* bf = reinterpret_cast<BloomFilter*>(inter->ptr);
+  bf->Set(value.val);
+  //todo, can't subtract bigint over 2^32 from int
+}
+
+void pbfBigIntUpdate(FunctionContext* ctx, const BigIntVal& value, const BigIntVal& minconst, const BigIntVal& maxconst, StringVal* inter) {
 //void pbfUpdate(FunctionContext* ctx, const IntVal& value, StringVal* inter) {
   // as with other sql counts, null is skipped
   if(value.is_null) return;
@@ -127,6 +142,8 @@ StringVal pbfSerialize(FunctionContext* ctx, const StringVal& inter) {
   //todo perf: check if copy can be removed
   //todo perf: serialize may not be needed, use string cleanup
 }
+
+
 
 void pbfMerge(FunctionContext* ctx, const StringVal& merge, StringVal* inter) {
 

@@ -7,7 +7,8 @@
 using namespace impala_udf;
 
 void pbfInit(FunctionContext* ctx, StringVal* inter);
-void pbfUpdate(FunctionContext* ctx, const IntVal& value, const BigIntVal& minconst, const BigIntVal& maxconst, StringVal* inter);
+void pbfIntUpdate(FunctionContext* ctx, const IntVal& value, const BigIntVal& minconst, const BigIntVal& maxconst, StringVal* inter);
+void pbfBigIntUpdate(FunctionContext* ctx, const IntVal& value, const BigIntVal& minconst, const BigIntVal& maxconst, StringVal* inter);
 StringVal pbfSerialize(FunctionContext* ctx, const StringVal& inter);
 void pbfMerge(FunctionContext* ctx, const StringVal& merge, StringVal* inter);
 BigIntVal pbfFinalize(FunctionContext* ctx, const StringVal& inter);
