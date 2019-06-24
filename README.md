@@ -28,8 +28,7 @@ INIT_FN='pbfInit'
 UPDATE_FN='pbfIntUpdate'
 MERGE_FN='pbfMerge'
 SERIALIZE_FN='pbfSerialize'
-FINALIZE_FN='pbfFinalize'
-INTERMEDIATE string;
+FINALIZE_FN='pbfFinalize';
 ```
 
 ```sql
@@ -44,8 +43,7 @@ INIT_FN='pbfInit'
 UPDATE_FN='pbfBigIntUpdate'
 MERGE_FN='pbfMerge'
 SERIALIZE_FN='pbfSerialize'
-FINALIZE_FN='pbfFinalize'
-INTERMEDIATE string;
+FINALIZE_FN='pbfFinalize';
 ```
 
 ```sql
