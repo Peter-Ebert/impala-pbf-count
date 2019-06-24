@@ -22,7 +22,7 @@ Bad fit
 
 **Int**
 ```sql
-CREATE AGGREGATE FUNCTION CountInt(int, bigint, bigint) RETURNS BIGINT
+CREATE AGGREGATE FUNCTION CountInt(int, bigint, bigint) RETURNS BIGINT intermediate string
 LOCATION '/path/to/udfs/libpbfcount.so'
 INIT_FN='pbfInit'
 UPDATE_FN='pbfIntUpdate'
@@ -37,7 +37,7 @@ SELECT CountInt(column_name, 1, 1000) FROM table_name
 
 **BigInt**
 ```sql
-CREATE AGGREGATE FUNCTION CountBigInt(bigint, bigint, bigint) RETURNS BIGINT
+CREATE AGGREGATE FUNCTION CountBigInt(bigint, bigint, bigint) RETURNS BIGINT intermediate string
 LOCATION '/path/to/udfs/libpbfcount.so'
 INIT_FN='pbfInit'
 UPDATE_FN='pbfBigIntUpdate'
