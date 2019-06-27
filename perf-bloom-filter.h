@@ -20,7 +20,7 @@ using namespace std;
 struct BloomFilter {
   uint64_t bytesize;
   int64_t offset;
-  uint64_t bitmask;
+  uint64_t bitmask; //can use _blsmsk_u64 
   uint8_t bytes[];
   //todo: might be cleaner as class with constructor that manages memory
 
